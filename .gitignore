@@ -10,5 +10,7 @@ downloads/*
 .DS_Store
 .env
 flexget/*.sqlite
+flexget/.config-lock
+flexget/*.bak
 transmission/dht.dat
 transmission/stats.json

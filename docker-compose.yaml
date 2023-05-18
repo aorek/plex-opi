@@ -62,12 +62,12 @@ services:
       - "80:80/tcp"
       - "443:443/tcp"
     environment:
-      - TZ=Europe/Madrid
+      - TZ=${TIMEZONE}
       - WEBPASSWORD=${PASSWORD} 
     # Volumes store your data between container upgrades
     volumes:
-       - './etc-pihole/:/etc/pihole/'
-       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+       - '${STORAGE}/etc-pihole/:/etc/pihole/'
+       - '${STORAGE}/etc-dnsmasq.d/:/etc/dnsmasq.d/'
     dns:
       - 127.0.0.1
       - 1.1.1.1
@@ -92,9 +92,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Madrid
+      - TZ=${TIMEZONE}
       - WEBUI_PORT=8080
     volumes:
+      - ./qbittorrent/config/qBittorrent/qBittorrent.conf:/config/qBittorrent/qBittorrent.conf
       - ${STORAGE}/qbittorrent/config:/config
       - ${STORAGE}/torrents:/downloads
     ports:
