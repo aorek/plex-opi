@@ -1,4 +1,4 @@
-# Plex sobre Docker en Raspberry
+# Plex sobre Docker en Orange Pi
 
 Con este repo podes crear tu propio server que descarga tus series y peliculas automáticamente, y cuando finaliza, las copia al directorio `media/` donde Plex las encuentra y las agrega a tu biblioteca.
 
@@ -13,7 +13,7 @@ NOTA: Esta repo fue actualizada para correr usando flexget y transmission [en es
 Agregar tu usuario (cambiar `kbs` con tu nombre de usuario)
 
 ```
-sudo useradd kbs -G sudo
+sudo useradd kero -G sudo
 ```
 
 Agregar esto al sudoers para correr sudo sin password
@@ -25,7 +25,7 @@ Agregar esto al sudoers para correr sudo sin password
 Agregar esta linea a `sshd_config` para que sólo tu usuario pueda hacer ssh
 
 ```
-echo "AllowUsers kbs" | sudo tee -a /etc/ssh/sshd_config
+echo "AllowUsers kero" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl enable ssh && sudo systemctl start ssh
 ```
 
@@ -65,8 +65,8 @@ export DOCKER_TMPDIR="/mnt/storage/docker-tmp"
 Agregar tu usuario al grupo docker 
 
 ```
-# Add kbs to docker group
-sudo usermod -a -G docker kbs
+# Add kero to docker group
+sudo usermod -a -G docker kero
 #(logout and login)
 docker-compose up -d
 ```
