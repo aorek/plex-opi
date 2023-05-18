@@ -16,23 +16,6 @@ templates:
           exact: yes
           propers: 12 hours
           quality: 720p
-      tv:
-      - Black Mirror
-      - Brooklyn Nine-Nine
-      - Homeland
-      - Luther
-      - Mr Robot
-      - Rick and Morty
-      - SEAL Team
-      - Sherlock
-      - Silicon Valley
-      - Suits
-      - The Flash
-      - The Good Fight
-      - The Walking Dead
-      - Tosh.0
-      - True Detective
-      - Westworld
 
     transmission:
       host: transmission
@@ -41,10 +24,10 @@ templates:
       password: "123456"
 
 tasks:
-  eztvrss:
-    rss: https://eztv.ag/ezrss.xml
-    template: tv
-    priority: 2
+  #  eztvrss:
+  #    rss: https://eztv.ag/ezrss.xml
+  #    template: tv
+  #    priority: 2
   sort_tv:
     priority: 2
     no_entries_ok: yes
@@ -63,11 +46,7 @@ tasks:
       auto_escape: yes
       on_output:
         for_entries: |
-          if mediainfo "{{ location }}" | grep EAC3; then
-            mkdir -p "/storage/series/{{ tvdb_series_name }}/Season {{ series_season }}" && ffmpeg -hwaccel auto -y -i "{{ location }}" -map 0 -c:s copy -c:v copy -c:a ac3 -b:a 640k "/storage/series/{{ tvdb_series_name }}/Season {{ series_season }}/{{ tvdb_series_name }} - {{ series_id }}{{ location | pathext }}"
-          else
-            mkdir -p "/storage/series/{{ tvdb_series_name }}/Season {{ series_season }}" && cp "{{ location }}" "/storage/series/{{ tvdb_series_name }}/Season {{ series_season }}/{{ tvdb_series_name }} - {{ series_id }}{{ location | pathext }}"
-          fi
+          mkdir -p "/storage/tvshows/{{ tvdb_series_name }}/Season {{ series_season }}" && cp "{{ location }}" "/storage/tvshows/{{ tvdb_series_name }}/Season {{ series_season }}/{{ tvdb_series_name }} - {{ series_id }}{{ location | pathext }}"
   sort_movies:
     priority: 2
     no_entries_ok: yes
@@ -81,26 +60,5 @@ tasks:
     exec:
       auto_escape: yes
       on_output:
-       for_entries: |
-         if mediainfo "{{ location }}" | grep EAC3; then
-           mkdir -p "/storage/pelis/{{ movie_name }} ({{ movie_year }})" && ffmpeg -hwaccel auto -y -i "{{ location }}" -map 0 -c:s copy -c:v copy -c:a ac3 -b:a 640k "/storage/pelis/{{ movie_name }} ({{ movie_year }})/{{ movie_name }} ({{ movie_year }}){{ location | pathext }}"
-         else
-           mkdir -p "/storage/pelis/{{ movie_name }} ({{ movie_year }})" && cp "{{ location }}" "/storage/pelis/{{ movie_name }} ({{ movie_year }})/{{ movie_name }} ({{ movie_year }}){{ location | pathext }}"
-         fi
-  remove_stale_torrents:
-    from_transmission:
-      host: transmission
-      port: 9091
-      username: admin
-      password: "123456"
-    disable: [seen, seen_info_hash]
-    if:
-      - transmission_progress == 100: accept
-      - not transmission_seed_ratio_ok: reject
-      - not transmission_idle_limit_ok: reject
-    transmission:
-      host: transmission
-      port: 9091
-      username: admin
-      password: "123456"
-      action: purge
+        for_entries: |
+          mkdir -p "/storage/movies/{{ movie_name }} ({{ movie_year }})" && cp "{{ location }}" "/storage/movies/{{ movie_name }} ({{ movie_year }})/{{ movie_name }} ({{ movie_year }}){{ location | pathext }}"
